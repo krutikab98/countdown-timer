@@ -1,38 +1,57 @@
 .App {
   text-align: center;
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  height: 100vh;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.timer-settings {
+  margin-bottom: 2rem;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.timer-settings label {
+  font-size: 1.2rem;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+.timer-settings input {
+  margin-left: 1rem;
+  padding: 0.5rem;
+  font-size: 1.2rem;
+  width: 100px;
+}
+
+.timer-display {
+  margin-bottom: 2rem;
+}
+
+.timer-display h2 {
+  font-size: 2rem;
+  margin: 0;
+}
+
+.timer-controls button {
+  padding: 0.75rem 1.5rem;
+  margin: 0 0.5rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: inline-flex;
+  column-gap: 5px;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+.timer-controls button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.timer-controls button:not(:disabled) {
+  background-color: #007bff;
   color: white;
+  border: none;
+  border-radius: 5px;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.timer-controls button:not(:disabled):hover {
+  background-color: #0056b3;
 }
