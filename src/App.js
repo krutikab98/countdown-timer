@@ -1,113 +1,85 @@
+// src/App.js
+
 import React, { useState, useEffect } from 'react';
 import './App.css';
+import TimerInput from './components/TimerInput';
+import TimerDisplay from './components/TimerDisplay';
 
-function App() {
+const App = () => {
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
   const [seconds, setSeconds] = useState(0);
-  const [totalSeconds, setTotalSeconds] = useState(0);
-  const [timerRunning, setTimerRunning] = useState(false);
-  const [intervalId, setIntervalId] = useState(null);
+  const [isActive, setIsActive] = useState(false);
+  const [remainingTime, setRemainingTime] = useState(0);
 
   useEffect(() => {
-    if (totalSeconds === 0 && timerRunning) {
-      clearInterval(intervalId);
-      setTimerRunning(false);
+    let interval = null;
+    if (isActive && remainingTime > 0) {
+      interval = setInterval(() => {
+        setRemainingTime(remainingTime => remainingTime - 1);
+      }, 1000);
+    } else if (!isActive && remainingTime !== 0) {
+      clearInterval(interval);
     }
-  }, [totalSeconds, timerRunning, intervalId]);
+
+    return () => clearInterval(interval);
+  }, [isActive, remainingTime]);
+
+  useEffect(() => {
+    const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+    setRemainingTime(totalSeconds);
+  }, [hours, minutes, seconds]);
 
   const startTimer = () => {
-    if (totalSeconds > 0 && !timerRunning) {
-      setTimerRunning(true);
-      const id = setInterval(() => {
-        setTotalSeconds(prevTotalSeconds => prevTotalSeconds - 1);
-      }, 1000);
-      setIntervalId(id);
+    if (remainingTime > 0) {
+      setIsActive(true);
     }
   };
 
   const stopTimer = () => {
-    clearInterval(intervalId);
-    setTimerRunning(false);
+    setIsActive(false);
   };
 
   const resetTimer = () => {
-    clearInterval(intervalId);
+    setIsActive(false);
     setHours(0);
     setMinutes(0);
     setSeconds(0);
-    setTotalSeconds(0);
-    setTimerRunning(false);
+    setRemainingTime(0);
   };
 
-  const updateTotalSeconds = () => {
-    const total = parseInt(hours) * 3600 + parseInt(minutes) * 60 + parseInt(seconds);
-    setTotalSeconds(total);
+  const displayTime = {
+    hours: Math.floor(remainingTime / 3600),
+    minutes: Math.floor((remainingTime % 3600) / 60),
+    seconds: remainingTime % 60
   };
-
-  useEffect(() => {
-    const remainingHours = Math.floor(totalSeconds / 3600);
-    const remainingMinutes = Math.floor((totalSeconds % 3600) / 60);
-    const remainingSeconds = totalSeconds % 60;
-
-    setHours(remainingHours);
-    setMinutes(remainingMinutes);
-    setSeconds(remainingSeconds);
-  }, [totalSeconds]);
 
   return (
     <div className="App">
       <h1>Countdown Timer</h1>
-      <div className="timer-settings">
-        <label>
-          Hours:
-          <input
-            type="number"
-            value={hours}
-            onChange={(e) => setHours(Number(e.target.value))}
-            disabled={timerRunning}
-          />
-        </label>
-        <label>
-          Minutes:
-          <input
-            type="number"
-            value={minutes}
-            onChange={(e) => setMinutes(Number(e.target.value))}
-            disabled={timerRunning}
-          />
-        </label>
-        <label>
-          Seconds:
-          <input
-            type="number"
-            value={seconds}
-            onChange={(e) => setSeconds(Number(e.target.value))}
-            disabled={timerRunning}
-          />
-        </label>
-        <button onClick={updateTotalSeconds} disabled={timerRunning}>
-          Set Timer
-        </button>
-      </div>
-      <div className="timer-display">
-        <h2>{`${hours.toString().padStart(2, '0')}:${minutes
-          .toString()
-          .padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`}</h2>
-      </div>
-      <div className="timer-controls">
-        <button onClick={startTimer} disabled={timerRunning || totalSeconds <= 0}>
+      <TimerInput
+        hours={hours}
+        minutes={minutes}
+        seconds={seconds}
+        setHours={setHours}
+        setMinutes={setMinutes}
+        setSeconds={setSeconds}
+      />
+      <TimerDisplay {...displayTime} />
+      <div className="buttons">
+        <button onClick={startTimer} className="start" disabled={isActive}>
           Start
         </button>
-        <button onClick={stopTimer} disabled={!timerRunning}>
+        <button onClick={stopTimer} className="stop">
           Stop
         </button>
-        <button onClick={resetTimer}>
+        <button onClick={resetTimer} className="reset">
           Reset
         </button>
       </div>
+
     </div>
   );
-}
+};
 
 export default App;

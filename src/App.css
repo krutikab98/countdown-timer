@@ -1,63 +1,64 @@
 .App {
   text-align: center;
-  padding: 2rem;
   font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
-  height: 100vh;
+  padding: 20px;
 }
 
-.timer-settings {
-  margin-bottom: 2rem;
+.timer-input {
+  display: inline-flex;
 }
 
-.timer-settings label {
-  font-size: 1.2rem;
-  margin-right: 1rem;
-}
-
-.timer-settings input {
-  margin-left: 0.5rem;
-  padding: 0.5rem;
-  font-size: 1.2rem;
-  width: 80px;
-}
-
-.timer-settings button {
-  margin-left: 1rem;
-  padding: 0.5rem 1rem;
+.timer-input input {
+  width: 50px;
+  margin: 10px;
+  padding: 10px;
   font-size: 1.2rem;
 }
 
 .timer-display {
-  margin-bottom: 2rem;
-}
-
-.timer-display h2 {
   font-size: 2.5rem;
-  margin: 0;
+  margin: 20px 0;
 }
 
-.timer-controls button {
-  padding: 0.75rem 1.5rem;
-  margin: 0 0.5rem;
-  font-size: 1.2rem;
+.buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 1rem;
   cursor: pointer;
-}
-
-.timer-controls button:disabled {
-  background-color: #cccccc;
-  cursor: not-allowed;
   border: none;
   border-radius: 5px;
-}
-
-.timer-controls button:not(:disabled) {
-  background-color: #007bff;
+  background-color: #4CAF50;
   color: white;
-  border: none;
-  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
-.timer-controls button:not(:disabled):hover {
-  background-color: #0056b3;
+button:hover {
+  background-color: #45a049;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+button.stop {
+  background-color: #f44336;
+}
+
+button.stop:hover {
+  background-color: #d32f2f;
+}
+
+button.reset {
+  background-color: #e0d62c ;
+}
+
+button.reset:hover {
+  background-color: #d8cc09;
 }
